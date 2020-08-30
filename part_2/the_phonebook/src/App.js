@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 
 const Add = ({name,number}) => {
-  
   return <h5>{name.name} {number.number}</h5>
 }
 

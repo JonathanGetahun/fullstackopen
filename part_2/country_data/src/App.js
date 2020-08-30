@@ -2,6 +2,43 @@ import React , { useState, useEffect } from 'react';
 
 import axios from 'axios'
 
+const Info = ({data}) => {
+  return (
+    <div>
+      {console.log("works too")}
+      {console.log(data[0])}
+      <h1>{data[0].name}</h1>
+      <p>capital {data[0].capital}</p>
+      <p>population {data[0].population}</p>
+      <h2>Spoken Languages</h2>
+        {data[0].languages.map(lang => <li>{lang.name}</li>)}
+        <br></br>
+      <img src={data[0].flag} />
+
+    </div>
+  )
+}
+const Button = ({name,data}) => {
+  const [clicked, changeClick] = useState(true)
+  
+  let correctVal = data.filter(correct => correct.name == name)
+
+  const handleClick = (event) => {
+    event.preventDefault()
+    console.log("works")
+    changeClick(false);
+  }
+  
+  return (
+    <div>
+      
+      {clicked ?
+        <p>{name} <button type="submit" onClick={handleClick}>show</button></p>
+        : <Info data = {correctVal}/>}
+        </div>
+  )
+}
+
 const Filter = ({data, searchName}) => {
 
   let filtered = []
@@ -18,7 +55,7 @@ const Filter = ({data, searchName}) => {
   }
 
   return final.map(seperate => {console.log(seperate)
-    return<li>{seperate}</li>})
+    return( <Button name={seperate}  data={filtered} />)})
 }
 
 const App = () => {
