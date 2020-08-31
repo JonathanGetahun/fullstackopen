@@ -21,6 +21,8 @@ const App = () => {
 
   }, [])
 
+  //This changes notification state which is set to Notification component to change 
+  //the color of teh success and error class notifications
   const notifyWith = (message, type='success') => {
     setNotification({ message, type })
     setTimeout(() => {
@@ -39,7 +41,7 @@ const App = () => {
   const handleFilterStringChange = (event) => {
     setStringFilter(event.target.value)
   } 
-
+//window is the DOM and has .confirm, .alert, etc. 
   const deletePerson = (id) => {
     const toDelete = persons.find(p => p.id === id)
     const ok = window.confirm(`Delete ${toDelete.name}`)
@@ -83,7 +85,7 @@ const App = () => {
         setNewName('')
         setNewNumber('')
       }).catch(error => {
-        // pääset käsiksi palvelimen palauttamaan virheilmoitusolioon näin
+        
         console.log(error.response.data.error)
         notifyWith(`${error.response.data.error} `, 'error')
       })
