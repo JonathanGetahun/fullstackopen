@@ -5,7 +5,14 @@ const Add = ({name,number}) => {
   return <h5>{name.name} {number.number}</h5>
 }
 
-
+// const AddPerson = ({person}) => {
+//   console.log("hello",person)
+//   useEffect(() => {
+//     axios.post('http://localhost:3001/persons',person) 
+//     .then(response => {
+//     console.log(response)
+//   })
+// }, [])}
 const App = () => {
   
   const [ persons, setPersons ] = useState([]) 
@@ -18,8 +25,10 @@ const App = () => {
     .then(response => {
       console.log(response.data)
     })
-  })
+  }, [])
+
   
+
 
   const handleChangeName = (event) =>{
     setNewName(event.target.value)
@@ -39,8 +48,12 @@ const App = () => {
     if (persons.find(element => element.name === newName)) {
       window.alert(`${newName} has already been added`)
     } else {
-      const addName = {name: newName, number: newNumber, id:persons.length+1}
+      const addName = {name: newName, number: newNumber}
+      axios.post('http://localhost:3001/persons',addName) 
+      .then(response => {
+      console.log(response)})
       setPersons(persons.concat(addName))
+      // return <AddPerson person = {persons}/>
     }
     
     setNewName('')
