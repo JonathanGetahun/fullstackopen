@@ -5,11 +5,13 @@ const morgan = require('morgan')
 const cors = require('cors')
 
 
+
 //middleware to convert JSON strings from requests to whatever required 
 app.use(express.json())
 app.use(morgan('tiny'))
 //useful for making sure I can use two different servers in the browser
 app.use(cors())
+app.use(express.static('build'))
 
 
 let phonebook = [
