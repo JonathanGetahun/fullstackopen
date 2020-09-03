@@ -1,9 +1,16 @@
 const express = require("express");
 const { response } = require("express");
 const app = express();
+const morgan = require('morgan')
+const cors = require('cors')
+
 
 //middleware to convert JSON strings from requests to whatever required 
 app.use(express.json())
+app.use(morgan('tiny'))
+//useful for making sure I can use two different servers in the browser
+app.use(cors())
+
 
 let phonebook = [
      {
@@ -82,7 +89,7 @@ app.post('/api/persons', (req, res) => {
 
 
 //Create a web server and listen
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
     console.log(`listening on ${PORT}`)
 })
