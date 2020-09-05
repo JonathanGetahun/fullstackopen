@@ -1,3 +1,5 @@
+require('dotenv').config()
+const Entry = require('./models/mongo')
 const express = require("express");
 const { response } = require("express");
 const app = express();
@@ -46,17 +48,14 @@ app.get('/info', (req, res) => {
 })
 
 app.get('/api/persons', (req,res) => {
-    res.json(phonebook);
+    Entry.find({}).then(entries => {
+        res.json(entries)
+    })
 })
 
 app.get('/api/persons/:id', (req,res) => {
-    const name = phonebook.find(person => person.id === Number(req.params.id))
-    if(name){
-        return res.json(name)
-    } else {
-        return res.status(404).end()
-    }
-    
+  Entry.findById(req.params.id).then(note => {
+        res.json(note) }) 
 })
 
 app.delete('/api/persons/:id', (req, res) => {
@@ -65,28 +64,30 @@ app.delete('/api/persons/:id', (req, res) => {
 })
 
 app.post('/api/persons', (req, res) => {
-    const name = req.body
+    const {name, number} = req.body
 
-    if(!name.name || !name.number){
+    if(!name|| !name){
         return res.status(400).json({
             error: 'content missing'
         })
     }
 
-    const check = phonebook.find(names => names.name === name.name)
-    if(check) {
-        return res.status(400).json({
-            error: 'name already exists'
-        })
-    }
-    const maxId = phonebook.length > 0 
-    ? (Math.random() * 100) + phonebook.length
-    : 0
-     name.id = maxId + 1
+    const entry = new Entry({
+        name: name,
+        number: number
+    })
 
-    phonebook = phonebook.concat(name)
+    entry.save().then(savedEntry => {
+        res.json(savedEntry)
+    })
 
-    res.json(phonebook)
+    // const check = phonebook.find(names => names.name === name.name)
+    // if(check) {
+    //     return res.status(400).json({
+    //         error: 'name already exists'
+    //     })
+    // }
+
 })
 
 
